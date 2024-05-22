@@ -1,3 +1,5 @@
+import Select from "react-select";
+
 interface FormItemProps {
   amount: string | null;
   onDelete: () => void;
@@ -21,10 +23,7 @@ export function FormItem({
         required
         onChange={(e) => onUpdateAmount(e.target.value)}
       />
-      <input
-        className="w-full border rounded p-1"
-        placeholder="HarryPotterObamaSonic10Inu"
-      />
+      <Select placeholder="HarryPotterObamaSonic10Inu" />
       {shouldEnableDelete && (
         <button
           aria-label="Delete item"
