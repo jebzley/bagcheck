@@ -3,7 +3,7 @@ import { Dispatch, ReactNode, createContext, useReducer } from "react";
 
 interface Coin {
   id: string;
-  name: string;
+  selection: { value: string; label: string } | null;
   amount: string | null;
 }
 
@@ -23,6 +23,14 @@ interface AddCoinAction {
   type: Action.AddCoin;
 }
 
+interface ChangeCoinAction {
+  type: Action.ChangeCoin;
+  payload: {
+    selection: Coin["selection"];
+    index: number;
+  };
+}
+
 interface RemoveCoinAction {
   type: Action.RemoveCoin;
   payload: {
@@ -30,9 +38,13 @@ interface RemoveCoinAction {
   };
 }
 
-type TAction = AddCoinAction | ChangeAmountAction | RemoveCoinAction;
+type TAction =
+  | AddCoinAction
+  | ChangeAmountAction
+  | RemoveCoinAction
+  | ChangeCoinAction;
 
-const INITIAL_STATE: Coin[] = [{ id: "init", name: "Buttcoin", amount: "69" }];
+const INITIAL_STATE: Coin[] = [{ id: "init", selection: null, amount: null }];
 
 export const CoinContext = createContext<{
   state: Coin[];
@@ -45,7 +57,7 @@ export const CoinContext = createContext<{
 function handleAddCoin(state: Coin[]) {
   return [
     ...state,
-    { id: `formitem${Math.random() * 100}`, name: "", amount: null },
+    { id: `formitem${Math.random() * 100}`, selection: null, amount: null },
   ];
 }
 
@@ -66,6 +78,15 @@ function handleRemoveCoin(state: Coin[], index: number) {
   return updatedState;
 }
 
+function handleChangeCoin(
+  state: Coin[],
+  selection: Coin["selection"],
+  index: number
+) {
+  const updatedState = [...state];
+  updatedState[index].selection = selection;
+  return updatedState;
+}
 function reducer(state: Coin[], action: TAction) {
   switch (action.type) {
     case Action.AddCoin:
@@ -78,6 +99,12 @@ function reducer(state: Coin[], action: TAction) {
       );
     case Action.RemoveCoin:
       return handleRemoveCoin(state, action.payload.index);
+    case Action.ChangeCoin:
+      return handleChangeCoin(
+        state,
+        action.payload.selection,
+        action.payload.index
+      );
   }
 }
 

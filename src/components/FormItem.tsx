@@ -1,31 +1,19 @@
-import { SearchCoinResponse } from "@/app/api/search/route";
-import { URL } from "@/constants/url";
 import AsyncSelect from "react-select/async";
 
 interface FormItemProps {
   amount: string | null;
+  value: { label: string; value: string } | null;
   onDelete: () => void;
-  onUpdateCoin: () => void;
+  onSearch: (term: string) => void;
+  onUpdateCoin: (e: { label: string; value: string }) => void;
   onUpdateAmount: (amount: string | null) => void;
   shouldEnableDelete: boolean;
 }
 
-async function handleSearch(term?: string) {
-  try {
-    const route = [URL.API.BASE_ROUTE, URL.API.SEARCH, term ?? ""].join("");
-    const response = await fetch(route);
-    const result: SearchCoinResponse = await response.json();
-    return result.coins.map((coin) => {
-      return { value: coin.id, label: coin.name };
-    });
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-}
-
 export function FormItem({
   amount,
+  value,
+  onSearch,
   onDelete,
   onUpdateCoin,
   onUpdateAmount,
@@ -44,9 +32,10 @@ export function FormItem({
       />
       <AsyncSelect
         className="w-full"
-        loadOptions={handleSearch}
+        value={value}
+        loadOptions={(term) => onSearch(term)}
         placeholder="HarryPotterObamaSonic10Inu"
-        onMenuClose={onUpdateCoin}
+        onChange={(e) => onUpdateCoin(e as { label: string; value: string })}
       />
       {shouldEnableDelete && (
         <button
