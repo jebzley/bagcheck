@@ -41,9 +41,6 @@ export default function AllocationForm() {
         })}
       </TransitionGroup>
       <div className="flex w-full justify-center relative">
-        <button type="submit" className="bg-slate-300 rounded p-1 w-24">
-          Done
-        </button>
         <button
           type="button"
           className="bg-slate-300 rounded p-1 w-24 absolute right-0"

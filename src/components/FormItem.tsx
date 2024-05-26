@@ -1,4 +1,3 @@
-"use client";
 import { SearchCoinResponse } from "@/app/api/search/route";
 import { URL } from "@/constants/url";
 import { useEffect } from "react";
