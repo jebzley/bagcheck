@@ -1,11 +1,11 @@
 import { SearchCoinResponse } from "@/app/api/search/route";
 import { URL } from "@/constants/url";
-import { useEffect } from "react";
 import AsyncSelect from "react-select/async";
 
 interface FormItemProps {
   amount: string | null;
   onDelete: () => void;
+  onUpdateCoin: () => void;
   onUpdateAmount: (amount: string | null) => void;
   shouldEnableDelete: boolean;
 }
@@ -27,10 +27,10 @@ async function handleSearch(term?: string) {
 export function FormItem({
   amount,
   onDelete,
+  onUpdateCoin,
   onUpdateAmount,
   shouldEnableDelete,
 }: FormItemProps) {
-  useEffect(() => {}, []);
   return (
     <div className="relative flex gap-6 mb-4">
       <input
@@ -46,6 +46,7 @@ export function FormItem({
         className="w-full"
         loadOptions={handleSearch}
         placeholder="HarryPotterObamaSonic10Inu"
+        onMenuClose={onUpdateCoin}
       />
       {shouldEnableDelete && (
         <button
