@@ -1,10 +1,13 @@
 "use client";
 import { useContext } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { FormItem } from "./FormItem";
-import { Action, CoinContext } from "./CoinContext";
-import { SearchCoinResponse } from "@/app/api/search/route";
+
 import { URL } from "@/constants/url";
+import { CoinContext } from "@/context/CoinContext";
+import { ActionKind } from "@/context/types";
+import { SearchCoinResponse } from "@/app/api/search/route";
+
+import { FormItem } from "./FormItem";
 
 async function handleSearch(term?: string) {
   try {
@@ -31,25 +34,25 @@ export default function AllocationForm() {
             <CSSTransition key={item.id} classNames="form-item" timeout={200}>
               <FormItem
                 key={item.id}
-                value={item.selection}
+                value={item.formSelection}
                 onSearch={handleSearch}
                 amount={state[index].amount}
                 onDelete={() =>
                   dispatch({
-                    type: Action.RemoveCoin,
+                    type: ActionKind.RemoveCoin,
                     payload: { index },
                   })
                 }
                 onUpdateCoin={(e) =>
                   dispatch({
-                    type: Action.ChangeCoin,
+                    type: ActionKind.ChangeCoin,
                     payload: { index, selection: e },
                   })
                 }
                 shouldEnableDelete={state.length > 1}
                 onUpdateAmount={(value) =>
                   dispatch({
-                    type: Action.ChangeAmount,
+                    type: ActionKind.ChangeAmount,
                     payload: { amount: value, index },
                   })
                 }
@@ -62,7 +65,7 @@ export default function AllocationForm() {
         <button
           type="button"
           className="bg-slate-300 rounded p-1 w-24 absolute right-0"
-          onClick={() => dispatch({ type: Action.AddCoin })}
+          onClick={() => dispatch({ type: ActionKind.AddCoin })}
         >
           +
         </button>
