@@ -74,7 +74,6 @@ function handleAddCoin(state: Coin[]) {
     ...state,
     { id: `formitem${Math.random() * 100}`, selection: null, amount: null },
   ];
-  localStorage.setItem("holdings", JSON.stringify(updatedState));
   return updatedState;
 }
 
@@ -86,19 +85,16 @@ function handleUpdateAmount(
   const checkedValue = !!Number(value) ? value : null;
   const updatedState = [...state];
   updatedState[index].amount = checkedValue;
-  localStorage.setItem("holdings", JSON.stringify(updatedState));
   return updatedState;
 }
 
 function handleRemoveCoin(state: Coin[], index: number) {
   const updatedState = [...state];
   updatedState.splice(index, 1);
-  localStorage.setItem("holdings", JSON.stringify(updatedState));
   return updatedState;
 }
 
 function handleSetAllCoins(coins: Coin[]) {
-  localStorage.setItem("holdings", JSON.stringify(coins));
   return coins;
 }
 
@@ -133,6 +129,7 @@ function reducer(state: Coin[], action: TAction) {
       return handleSetAllCoins(action.payload.coins);
   }
 }
+
 export function CoinContextProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
@@ -145,6 +142,12 @@ export function CoinContextProvider({ children }: { children: ReactNode }) {
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (state != INITIAL_STATE) {
+      localStorage.setItem("holdings", JSON.stringify(state));
+    }
+  }, [state]);
 
   return (
     <CoinContext.Provider value={{ state, dispatch }}>
