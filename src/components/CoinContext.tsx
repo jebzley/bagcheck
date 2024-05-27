@@ -1,5 +1,11 @@
 "use client";
-import { Dispatch, ReactNode, createContext, useReducer } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  createContext,
+  useEffect,
+  useReducer,
+} from "react";
 
 interface Coin {
   id: string;
@@ -9,6 +15,7 @@ interface Coin {
 
 export enum Action {
   AddCoin = "ADD_COIN",
+  SetAllCoins = "SET_ALL_COINS",
   RemoveCoin = "REMOVE_COIN",
   ChangeCoin = "CHANGE_COIN",
   ChangeAmount = "CHANGE_AMOUNT",
@@ -38,11 +45,19 @@ interface RemoveCoinAction {
   };
 }
 
+interface SetAllCoinsAction {
+  type: Action.SetAllCoins;
+  payload: {
+    coins: Coin[];
+  };
+}
+
 type TAction =
   | AddCoinAction
   | ChangeAmountAction
   | RemoveCoinAction
-  | ChangeCoinAction;
+  | ChangeCoinAction
+  | SetAllCoinsAction;
 
 const INITIAL_STATE: Coin[] = [{ id: "init", selection: null, amount: null }];
 
@@ -55,10 +70,12 @@ export const CoinContext = createContext<{
 });
 
 function handleAddCoin(state: Coin[]) {
-  return [
+  const updatedState = [
     ...state,
     { id: `formitem${Math.random() * 100}`, selection: null, amount: null },
   ];
+  localStorage.setItem("holdings", JSON.stringify(updatedState));
+  return updatedState;
 }
 
 function handleUpdateAmount(
@@ -69,13 +86,20 @@ function handleUpdateAmount(
   const checkedValue = !!Number(value) ? value : null;
   const updatedState = [...state];
   updatedState[index].amount = checkedValue;
+  localStorage.setItem("holdings", JSON.stringify(updatedState));
   return updatedState;
 }
 
 function handleRemoveCoin(state: Coin[], index: number) {
   const updatedState = [...state];
   updatedState.splice(index, 1);
+  localStorage.setItem("holdings", JSON.stringify(updatedState));
   return updatedState;
+}
+
+function handleSetAllCoins(coins: Coin[]) {
+  localStorage.setItem("holdings", JSON.stringify(coins));
+  return coins;
 }
 
 function handleChangeCoin(
@@ -105,11 +129,23 @@ function reducer(state: Coin[], action: TAction) {
         action.payload.selection,
         action.payload.index
       );
+    case Action.SetAllCoins:
+      return handleSetAllCoins(action.payload.coins);
   }
 }
-
 export function CoinContextProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+
+  useEffect(() => {
+    const coins = localStorage.getItem("holdings");
+    if (coins) {
+      dispatch({
+        type: Action.SetAllCoins,
+        payload: { coins: JSON.parse(coins) },
+      });
+    }
+  }, []);
+
   return (
     <CoinContext.Provider value={{ state, dispatch }}>
       {children}
