@@ -2,6 +2,7 @@ export interface CoinState {
   id: string;
   formSelection: { value: string; label: string } | null;
   amount: string | null;
+  price?: number;
 }
 
 export interface State {
@@ -16,6 +17,7 @@ export enum ActionKind {
   ChangeCoin = "CHANGE_COIN",
   ChangeAmount = "CHANGE_AMOUNT",
   SetIsLoading = "SET_IS_LOADING",
+  SetPrice = "SET_COIN_PRICE",
 }
 
 interface ChangeAmountAction {
@@ -56,10 +58,19 @@ interface SetIsLoadingAction {
   };
 }
 
+interface SetCoinPriceAction {
+  type: ActionKind.SetPrice;
+  payload: {
+    id: string;
+    price: number;
+  };
+}
+
 export type StateAction =
   | AddCoinAction
   | ChangeAmountAction
   | RemoveCoinAction
   | ChangeCoinAction
   | SetAllCoinsAction
-  | SetIsLoadingAction;
+  | SetIsLoadingAction
+  | SetCoinPriceAction;

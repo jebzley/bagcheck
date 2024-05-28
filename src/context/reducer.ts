@@ -57,6 +57,14 @@ function handleSetIsLoading(state: State, isLoading: boolean) {
   return { ...state, isLoading };
 }
 
+function handleSetCoinPrice(state: State, id: string, price: number) {
+  const coinIndex = state.coins.findIndex((coin) => coin.id === id);
+  if (coinIndex === -1) return { ...state };
+  const updatedCoins = [...state.coins];
+  updatedCoins[coinIndex].price = price;
+  return { ...state, coins: updatedCoins };
+}
+
 export function stateReducer(state: State, action: StateAction) {
   switch (action.type) {
     case ActionKind.AddCoin:
@@ -79,5 +87,7 @@ export function stateReducer(state: State, action: StateAction) {
       return handleSetAllCoins(state, action.payload.coins);
     case ActionKind.SetIsLoading:
       return handleSetIsLoading(state, action.payload.isLoading);
+    case ActionKind.SetPrice:
+      return handleSetCoinPrice(state, action.payload.id, action.payload.price);
   }
 }
