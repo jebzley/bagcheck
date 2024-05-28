@@ -1,6 +1,5 @@
 "use client";
 import { useContext } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { URL } from "@/constants/url";
 import { CoinContext } from "@/context/CoinContext";
@@ -32,46 +31,42 @@ export default function AllocationForm() {
 
   return (
     <form className="w-96 h-full">
-      <TransitionGroup>
-        {state.coins.map((item, index) => {
-          return (
-            <CSSTransition key={item.id} classNames="form-item" timeout={200}>
-              <FormItem
-                key={item.id}
-                value={item.formSelection}
-                onSearch={handleSearch}
-                amount={state.coins[index].amount}
-                onDelete={() =>
-                  dispatch({
-                    type: ActionKind.RemoveCoin,
-                    payload: { index },
-                  })
-                }
-                onUpdateCoin={(e) =>
-                  dispatch({
-                    type: ActionKind.ChangeCoin,
-                    payload: { index, selection: e },
-                  })
-                }
-                shouldEnableDelete={state.coins.length > 1}
-                onUpdateAmount={(value) =>
-                  dispatch({
-                    type: ActionKind.ChangeAmount,
-                    payload: { amount: value, index },
-                  })
-                }
-              />
-            </CSSTransition>
-          );
-        })}
-      </TransitionGroup>
+      {state.coins.map((item) => {
+        return (
+          <FormItem
+            key={item.id}
+            value={item.formSelection}
+            onSearch={handleSearch}
+            amount={item.amount}
+            onDelete={() =>
+              dispatch({
+                type: ActionKind.RemoveCoin,
+                payload: { id: item.id },
+              })
+            }
+            onUpdateCoin={(e) =>
+              dispatch({
+                type: ActionKind.ChangeCoin,
+                payload: { id: item.id, selection: e },
+              })
+            }
+            shouldEnableDelete={state.coins.length > 1}
+            onUpdateAmount={(value) =>
+              dispatch({
+                type: ActionKind.ChangeAmount,
+                payload: { amount: value, id: item.id },
+              })
+            }
+          />
+        );
+      })}
       <div className="flex w-full justify-center relative">
         <button
           type="button"
-          className="bg-slate-300 rounded p-1 w-24 absolute right-0"
+          className="bg-slate-300 rounded p-1 w-full absolute right-0"
           onClick={() => dispatch({ type: ActionKind.AddCoin })}
         >
-          +
+          Add another investment
         </button>
       </div>
     </form>

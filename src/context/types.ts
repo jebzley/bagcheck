@@ -20,7 +20,7 @@ export enum ActionKind {
 
 interface ChangeAmountAction {
   type: ActionKind.ChangeAmount;
-  payload: { amount: string | null; index: number };
+  payload: { amount: string | null; id: string };
 }
 
 interface AddCoinAction {
@@ -31,14 +31,14 @@ interface ChangeCoinAction {
   type: ActionKind.ChangeCoin;
   payload: {
     selection: CoinState["formSelection"];
-    index: number;
+    id: string;
   };
 }
 
 interface RemoveCoinAction {
   type: ActionKind.RemoveCoin;
   payload: {
-    index: number;
+    id: string;
   };
 }
 

@@ -7,6 +7,7 @@ function handleAddCoin(state: State) {
   updatedState.coins = [
     ...updatedState.coins,
     {
+      //TODO: this is a yucky way to generate ids
       id: `formitem${Math.random() * 100}`,
       formSelection: null,
       amount: null,
@@ -15,16 +16,21 @@ function handleAddCoin(state: State) {
   return updatedState;
 }
 
-function handleUpdateAmount(state: State, value: string | null, index: number) {
+function handleUpdateAmount(state: State, value: string | null, id: string) {
   const checkedValue = !!Number(value) ? value : null;
   const updatedState = { ...state };
-  updatedState.coins[index].amount = checkedValue;
+  updatedState.coins = updatedState.coins.map((coin) => {
+    return {
+      ...coin,
+      amount: coin.id === id ? checkedValue : coin.amount,
+    };
+  });
   return updatedState;
 }
 
-function handleRemoveCoin(state: State, index: number) {
+function handleRemoveCoin(state: State, id: string) {
   const updatedState = { ...state };
-  updatedState.coins.splice(index, 1);
+  updatedState.coins = updatedState.coins.filter((coin) => coin.id !== id);
   return updatedState;
 }
 
@@ -37,10 +43,15 @@ function handleSetAllCoins(state: State, updatedCoins: CoinState[]) {
 function handleChangeCoin(
   state: State,
   selection: CoinState["formSelection"],
-  index: number
+  id: string
 ) {
   const updatedState = { ...state };
-  updatedState.coins[index].formSelection = selection;
+  updatedState.coins = updatedState.coins.map((coin) => {
+    return {
+      ...coin,
+      formSelection: coin.id === id ? selection : coin.formSelection,
+    };
+  });
   return updatedState;
 }
 
@@ -56,15 +67,15 @@ export function stateReducer(state: State, action: StateAction) {
       return handleUpdateAmount(
         state,
         action.payload.amount,
-        action.payload.index
+        action.payload.id
       );
     case ActionKind.RemoveCoin:
-      return handleRemoveCoin(state, action.payload.index);
+      return handleRemoveCoin(state, action.payload.id);
     case ActionKind.ChangeCoin:
       return handleChangeCoin(
         state,
         action.payload.selection,
-        action.payload.index
+        action.payload.id
       );
     case ActionKind.SetAllCoins:
       return handleSetAllCoins(state, action.payload.coins);

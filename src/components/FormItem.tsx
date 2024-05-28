@@ -31,7 +31,7 @@ export function FormItem({
         onChange={(e) => onUpdateAmount(e.target.value)}
       />
       <AsyncSelect
-        className="w-full overflow-hidden"
+        className="w-full"
         value={value}
         loadOptions={(term) => onSearch(term)}
         placeholder="HarryPotterObamaSonic10Inu"
