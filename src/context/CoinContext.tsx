@@ -40,6 +40,9 @@ export function CoinContextProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (state != INITIAL_STATE) {
+      //TODO: debounce
+      //TODO: sanitize state
+      //TODO: type check state
       localStorage.setItem("holdings", JSON.stringify(state));
     }
   }, [state.coins]);

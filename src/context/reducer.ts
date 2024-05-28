@@ -18,14 +18,11 @@ function handleAddCoin(state: State) {
 
 function handleUpdateAmount(state: State, value: string | null, id: string) {
   const checkedValue = !!Number(value) ? value : null;
-  const updatedState = { ...state };
-  updatedState.coins = updatedState.coins.map((coin) => {
-    return {
-      ...coin,
-      amount: coin.id === id ? checkedValue : coin.amount,
-    };
-  });
-  return updatedState;
+  const coinIndex = state.coins.findIndex((coin) => coin.id === id);
+  if (coinIndex === -1) return { ...state };
+  const updatedCoins = [...state.coins];
+  updatedCoins[coinIndex].amount = checkedValue;
+  return { ...state, coins: updatedCoins };
 }
 
 function handleRemoveCoin(state: State, id: string) {
@@ -45,14 +42,15 @@ function handleChangeCoin(
   selection: CoinState["formSelection"],
   id: string
 ) {
-  const updatedState = { ...state };
-  updatedState.coins = updatedState.coins.map((coin) => {
-    return {
-      ...coin,
-      formSelection: coin.id === id ? selection : coin.formSelection,
-    };
-  });
-  return updatedState;
+  const coinIndex = state.coins.findIndex((coin) => coin.id === id);
+  if (coinIndex === -1) return { ...state };
+  const updatedCoins = [...state.coins];
+  updatedCoins[coinIndex] = {
+    ...updatedCoins[coinIndex],
+    formSelection: selection,
+  };
+
+  return { ...state, coins: updatedCoins };
 }
 
 function handleSetIsLoading(state: State, isLoading: boolean) {
