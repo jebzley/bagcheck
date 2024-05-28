@@ -1,47 +1,54 @@
 "use client";
 
-import { ActionKind, StateAction, CoinState } from "./types";
+import { ActionKind, StateAction, CoinState, State } from "./types";
 
-function handleAddCoin(state: CoinState[]) {
-  const updatedState = [
-    ...state,
-    { id: `formitem${Math.random() * 100}`, formSelection: null, amount: null },
+function handleAddCoin(state: State) {
+  const updatedState = { ...state };
+  updatedState.coins = [
+    ...updatedState.coins,
+    {
+      id: `formitem${Math.random() * 100}`,
+      formSelection: null,
+      amount: null,
+    },
   ];
   return updatedState;
 }
 
-function handleUpdateAmount(
-  state: CoinState[],
-  value: string | null,
-  index: number
-) {
+function handleUpdateAmount(state: State, value: string | null, index: number) {
   const checkedValue = !!Number(value) ? value : null;
-  const updatedState = [...state];
-  updatedState[index].amount = checkedValue;
+  const updatedState = { ...state };
+  updatedState.coins[index].amount = checkedValue;
   return updatedState;
 }
 
-function handleRemoveCoin(state: CoinState[], index: number) {
-  const updatedState = [...state];
-  updatedState.splice(index, 1);
+function handleRemoveCoin(state: State, index: number) {
+  const updatedState = { ...state };
+  updatedState.coins.splice(index, 1);
   return updatedState;
 }
 
-function handleSetAllCoins(coins: CoinState[]) {
-  return coins;
+function handleSetAllCoins(state: State, updatedCoins: CoinState[]) {
+  const updatedState = { ...state };
+  updatedState.coins = updatedCoins;
+  return updatedState;
 }
 
 function handleChangeCoin(
-  state: CoinState[],
+  state: State,
   selection: CoinState["formSelection"],
   index: number
 ) {
-  const updatedState = [...state];
-  updatedState[index].formSelection = selection;
+  const updatedState = { ...state };
+  updatedState.coins[index].formSelection = selection;
   return updatedState;
 }
 
-export function stateReducer(state: CoinState[], action: StateAction) {
+function handleSetIsLoading(state: State, isLoading: boolean) {
+  return { ...state, isLoading };
+}
+
+export function stateReducer(state: State, action: StateAction) {
   switch (action.type) {
     case ActionKind.AddCoin:
       return handleAddCoin(state);
@@ -60,6 +67,8 @@ export function stateReducer(state: CoinState[], action: StateAction) {
         action.payload.index
       );
     case ActionKind.SetAllCoins:
-      return handleSetAllCoins(action.payload.coins);
+      return handleSetAllCoins(state, action.payload.coins);
+    case ActionKind.SetIsLoading:
+      return handleSetIsLoading(state, action.payload.isLoading);
   }
 }

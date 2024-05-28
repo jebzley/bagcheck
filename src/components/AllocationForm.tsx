@@ -26,17 +26,21 @@ async function handleSearch(term?: string) {
 export default function AllocationForm() {
   const { state, dispatch } = useContext(CoinContext);
 
+  if (state.isLoading) {
+    return <p>Loading</p>;
+  }
+
   return (
     <form className="w-96 h-full">
       <TransitionGroup>
-        {state.map((item, index) => {
+        {state.coins.map((item, index) => {
           return (
             <CSSTransition key={item.id} classNames="form-item" timeout={200}>
               <FormItem
                 key={item.id}
                 value={item.formSelection}
                 onSearch={handleSearch}
-                amount={state[index].amount}
+                amount={state.coins[index].amount}
                 onDelete={() =>
                   dispatch({
                     type: ActionKind.RemoveCoin,
@@ -49,7 +53,7 @@ export default function AllocationForm() {
                     payload: { index, selection: e },
                   })
                 }
-                shouldEnableDelete={state.length > 1}
+                shouldEnableDelete={state.coins.length > 1}
                 onUpdateAmount={(value) =>
                   dispatch({
                     type: ActionKind.ChangeAmount,

@@ -4,12 +4,18 @@ export interface CoinState {
   amount: string | null;
 }
 
+export interface State {
+  isLoading: boolean;
+  coins: CoinState[];
+}
+
 export enum ActionKind {
   AddCoin = "ADD_COIN",
   SetAllCoins = "SET_ALL_COINS",
   RemoveCoin = "REMOVE_COIN",
   ChangeCoin = "CHANGE_COIN",
   ChangeAmount = "CHANGE_AMOUNT",
+  SetIsLoading = "SET_IS_LOADING",
 }
 
 interface ChangeAmountAction {
@@ -43,9 +49,17 @@ interface SetAllCoinsAction {
   };
 }
 
+interface SetIsLoadingAction {
+  type: ActionKind.SetIsLoading;
+  payload: {
+    isLoading: boolean;
+  };
+}
+
 export type StateAction =
   | AddCoinAction
   | ChangeAmountAction
   | RemoveCoinAction
   | ChangeCoinAction
-  | SetAllCoinsAction;
+  | SetAllCoinsAction
+  | SetIsLoadingAction;
