@@ -40,7 +40,7 @@ async function fetchCoinPrice(e: CoinState["formSelection"]) {
 
 export default function AllocationForm() {
   const { state, dispatch } = useContext(CoinContext);
-  //TODO: this should be in state
+  //TODO: SOMETHING!!!
   const totalAmt = state.coins
     .map((coin) => Number(coin.price ?? 0) * Number(coin.amount ?? 0))
     .reduce((a, b) => a + b);
