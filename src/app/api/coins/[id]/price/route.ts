@@ -10,6 +10,7 @@ export async function GET(
     `${params.id}`,
     URL.COINGECKO.VS_USD,
     URL.COINGECKO.PRECISION_2,
+    URL.COINGECKO.INCLUDE_MCAP,
     URL.COINGECKO.API_KEY_QUERY_PARAM,
     process.env.COINGECKO_API_KEY,
   ].join("");
@@ -17,5 +18,6 @@ export async function GET(
   const response = await fetch(route);
   const result = await response.json();
   const usd = result[params.id].usd;
-  return Response.json({ id: params.id, usd });
+  const mcap = result[params.id].usd_market_cap;
+  return Response.json({ id: params.id, usd, mcap });
 }
