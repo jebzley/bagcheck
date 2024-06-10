@@ -1,3 +1,4 @@
+import { DEFAULT_COMBOBOX_OPTIONS } from "@/constants/coins";
 import AsyncSelect from "react-select/async";
 
 interface FormItemProps {
@@ -32,7 +33,9 @@ export function FormItem({
       />
       <AsyncSelect
         className="w-full"
+        required
         value={value}
+        defaultOptions={DEFAULT_COMBOBOX_OPTIONS}
         loadOptions={(term) => onSearch(term)}
         placeholder="HarryPotterObamaSonic10Inu"
         onChange={(e) => onUpdateCoin(e as { label: string; value: string })}
