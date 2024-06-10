@@ -17,6 +17,6 @@ export const DEFAULT_COMBOBOX_OPTIONS: { label: string; value: string }[] = [
   },
   {
     label: "XRP",
-    value: "xrp",
+    value: "ripple",
   },
 ];
