@@ -1,10 +1,10 @@
 import { SearchCoinResponse } from "@/app/api/search/route";
 import { DEFAULT_COMBOBOX_OPTIONS } from "@/constants/coins";
 import { URL } from "@/constants/url";
-import { CoinContext } from "@/context/CoinContext";
-import { ActionKind, CoinState } from "@/context/types";
-import { useContext } from "react";
+import { CoinState } from "@/store/types";
+import { useCoinStore } from "@/providers/store-provider";
 import AsyncSelect from "react-select/async";
+import { useShallow } from "zustand/react/shallow";
 
 interface FormItemProps {
   id: string;
@@ -33,7 +33,8 @@ async function fetchCoinPrice(e: CoinState["formSelection"]) {
       URL.API.PRICE,
     ].join("");
     const response = await fetch(url);
-    const result = await response.json();
+    // TODO: this needs to be a type
+    const result: { usd: number } = await response.json();
     return result;
   } catch (error) {
     console.error(error);
@@ -41,64 +42,55 @@ async function fetchCoinPrice(e: CoinState["formSelection"]) {
 }
 
 export function FormItem({ id }: FormItemProps) {
-  const { state, dispatch } = useContext(CoinContext);
-  const item = state.coins.find((coin) => coin.id === id) as CoinState;
+  const coin = useCoinStore(
+    useShallow((state) => state.coins.find((c) => c.id === id)?.formSelection)
+  );
+
+  const amount = useCoinStore(
+    useShallow((state) => state.coins.find((c) => c.id === id)?.amount)
+  );
+  const updateAmount = useCoinStore(useShallow((state) => state.updateAmount));
+  const updateCoin = useCoinStore(useShallow((state) => state.updateCoin));
+  const removeCoin = useCoinStore(useShallow((state) => state.removeCoin));
+  const setPrice = useCoinStore(useShallow((state) => state.setPrice));
 
   return (
     <div className="relative flex gap-6 mb-4">
       <input
         style={{ appearance: "textfield" }}
         type="number"
-        value={item.amount ? item.amount : ""}
         className="w-20 border rounded p-1 text-right"
         placeholder={"0"}
+        value={amount ? amount : "0"}
+        onChange={(e) => updateAmount(id, e.target.value)}
         required
-        onChange={(e) =>
-          dispatch({
-            type: ActionKind.ChangeAmount,
-            payload: { id, amount: e.target.value },
-          })
-        }
       />
       <AsyncSelect
         className="w-full"
         required
-        value={item.formSelection}
         defaultOptions={DEFAULT_COMBOBOX_OPTIONS}
         loadOptions={(term) => handleSearch(term)}
-        placeholder="HarryPotterObamaSonic10Inu"
-        onChange={async (e) => {
-          dispatch({
-            type: ActionKind.ChangeCoin,
-            payload: { id, selection: e },
-          });
-          const res = await fetchCoinPrice(e);
-          if (res) {
-            dispatch({
-              type: ActionKind.SetPrice,
-              payload: {
-                id,
-                price: res.usd,
-              },
-            });
+        value={coin}
+        onChange={async (v) => {
+          updateCoin(id, v);
+          const price = await fetchCoinPrice(
+            coin as CoinState["formSelection"]
+          );
+          if (price) {
+            setPrice(id, price.usd);
           }
         }}
+        placeholder="HarryPotterObamaSonic10Inu"
       />
-      {state.coins.length > 1 && (
-        <button
-          aria-label="Delete item"
-          type="button"
-          className="absolute -right-6 h-full flex items-center"
-          onClick={() =>
-            dispatch({
-              type: ActionKind.RemoveCoin,
-              payload: { id: id },
-            })
-          }
-        >
-          ✕
-        </button>
-      )}
+
+      <button
+        aria-label="Delete item"
+        type="button"
+        className="absolute -right-6 h-full flex items-center"
+        onClick={() => removeCoin(id)}
+      >
+        ✕
+      </button>
     </div>
   );
 }

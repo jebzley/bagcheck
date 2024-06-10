@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { CoinContextProvider } from "@/context/CoinContext";
+import { StoreContext, StoreProvider } from "@/providers/store-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <CoinContextProvider>
+        <StoreProvider>
           <main className="h-screen">{children}</main>
-        </CoinContextProvider>
+        </StoreProvider>
       </body>
     </html>
   );
