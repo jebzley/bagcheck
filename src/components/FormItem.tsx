@@ -73,9 +73,7 @@ export function FormItem({ id }: FormItemProps) {
         value={coin}
         onChange={async (v) => {
           updateCoin(id, v);
-          const price = await fetchCoinPrice(
-            coin as CoinState["formSelection"]
-          );
+          const price = await fetchCoinPrice(v);
           if (price) {
             setPrice(id, price.usd);
           }
