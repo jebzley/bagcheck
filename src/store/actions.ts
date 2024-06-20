@@ -1,12 +1,12 @@
 import { CoinState, State } from "@/store/types";
+import { v4 as uuid } from "uuid";
 
 export function handleAddCoin(state: State) {
   const updatedState = { ...state };
   updatedState.coins = [
     ...updatedState.coins,
     {
-      //TODO: this is a yucky way to generate ids
-      id: `formitem${Math.random() * 100}`,
+      id: uuid(),
       formSelection: null,
       amount: null,
     },
