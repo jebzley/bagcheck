@@ -6,9 +6,9 @@ import { useHoldingsStore } from "@/providers/store-provider";
 import type { SearchCoinResponse } from "@/app/api/search/route";
 import type { HoldingState, HoldingsStore } from "@/store/types";
 
-interface FormItemProps {
+type Props = {
   holding: HoldingState;
-}
+};
 
 async function handleSearch(term?: string) {
   try {
@@ -44,7 +44,7 @@ async function fetchCoinPrice(e: HoldingState["formSelection"]) {
 const selectHolding = (state: HoldingsStore, holding: HoldingState) =>
   state.holdings.find((h) => h.id === holding.id);
 
-export function FormItem({ holding }: FormItemProps) {
+export function FormItem({ holding }: Props) {
   const amount = useHoldingsStore(
     useShallow((state) => selectHolding(state, holding)?.amount)
   );
