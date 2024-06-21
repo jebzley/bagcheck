@@ -8,11 +8,13 @@ export function AllocationForm() {
   const router = useRouter();
   const holdings = useHoldingsStore(useShallow((state) => state.holdings));
   const addHolding = useHoldingsStore(useShallow((state) => state.actions.add));
-
-  const onSubmit = () => router.push("/assess");
-
   return (
-    <form className="w-96 h-full" action={"/assess"}>
+    <form
+      className="w-96 h-full"
+      action={() => {
+        router.push("/assess");
+      }}
+    >
       {holdings.map((holding) => {
         return <FormItem key={holding.id} holding={holding} />;
       })}
@@ -24,11 +26,7 @@ export function AllocationForm() {
         >
           Add another investment
         </button>
-        <button
-          type="submit"
-          className="bg-slate-300 rounded p-1 w-full"
-          onSubmit={onSubmit}
-        >
+        <button type="submit" className="bg-slate-300 rounded p-1 w-full">
           {"I'm done!"}
         </button>
       </div>

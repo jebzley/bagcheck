@@ -4,10 +4,10 @@ import { DEFAULT_COMBOBOX_OPTIONS } from "@/constants/coins";
 import { URL } from "@/constants/url";
 import { useHoldingsStore } from "@/providers/store-provider";
 import type { SearchCoinResponse } from "@/app/api/search/route";
-import type { HoldingState, HoldingsStore } from "@/store/types";
+import type { Holding, HoldingsStore } from "@/store/types";
 
 type Props = {
-  holding: HoldingState;
+  holding: Holding;
 };
 
 async function handleSearch(term?: string) {
@@ -24,7 +24,7 @@ async function handleSearch(term?: string) {
   }
 }
 
-async function fetchCoinPrice(e: HoldingState["formSelection"]) {
+async function fetchCoinPrice(e: Holding["formSelection"]) {
   try {
     const url = [
       URL.API.BASE_ROUTE,
@@ -41,7 +41,7 @@ async function fetchCoinPrice(e: HoldingState["formSelection"]) {
   }
 }
 
-const selectHolding = (state: HoldingsStore, holding: HoldingState) =>
+const selectHolding = (state: HoldingsStore, holding: Holding) =>
   state.holdings.find((h) => h.id === holding.id);
 
 export function FormItem({ holding }: Props) {
@@ -58,6 +58,8 @@ export function FormItem({ holding }: Props) {
   return (
     <div className="relative flex gap-6 mb-4">
       <input
+        id={`amt-${holding.id}`}
+        name={`amt-${holding.id}`}
         style={{ appearance: "textfield" }}
         type="number"
         className="w-20 border rounded p-1 text-right"
@@ -67,16 +69,18 @@ export function FormItem({ holding }: Props) {
         required
       />
       <AsyncSelect
+        id={`val-${holding.id}`}
+        name={`val-${holding.id}`}
         className="w-full"
         required
         defaultOptions={DEFAULT_COMBOBOX_OPTIONS}
         loadOptions={(term) => handleSearch(term)}
         value={holding.formSelection}
         onChange={async (v) => {
-          updateCoin(holding.id, v);
           const res = await fetchCoinPrice(v);
           if (res) {
             setPrice(holding.id, res.usd, res.mcap);
+            updateCoin(holding.id, v, res.usd, res.mcap);
           }
         }}
         placeholder="HarryPotterObamaSonic10Inu"

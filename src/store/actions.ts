@@ -1,4 +1,4 @@
-import type { HoldingState, HoldingsStore } from "@/store/types";
+import type { Holding, HoldingsStore } from "@/store/types";
 import { v4 as uuid } from "uuid";
 
 export function handleAddHolding(state: HoldingsStore) {
@@ -7,8 +7,12 @@ export function handleAddHolding(state: HoldingsStore) {
     ...updatedState.holdings,
     {
       id: uuid(),
+      name: null,
+      cgId: null,
       formSelection: null,
       amount: null,
+      price: null,
+      mcap: null,
     },
   ];
   return updatedState;
@@ -35,15 +39,17 @@ export function handleRemoveHolding(state: HoldingsStore, id: string) {
 
 export function handleSetAllHoldings(
   state: HoldingsStore,
-  updatedHoldings: HoldingState[]
+  updatedHoldings: Holding[]
 ) {
   return { ...state, holdings: updatedHoldings };
 }
 
 export function handleUpdateHolding(
   state: HoldingsStore,
-  selection: HoldingState["formSelection"],
-  id: string
+  id: string,
+  selection: Holding["formSelection"],
+  usd: number,
+  mcap: number
 ) {
   const i = state.holdings.findIndex((h) => h.id === id);
   if (i === -1) return { ...state };
@@ -51,6 +57,10 @@ export function handleUpdateHolding(
   updatedHoldings[i] = {
     ...updatedHoldings[i],
     formSelection: selection,
+    name: selection?.label ?? null,
+    cgId: selection?.value ?? null,
+    price: usd,
+    mcap: mcap,
   };
 
   return { ...state, holdings: updatedHoldings };
