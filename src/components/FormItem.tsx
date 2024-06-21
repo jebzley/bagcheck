@@ -34,32 +34,32 @@ async function fetchCoinPrice(e: HoldingState["formSelection"]) {
     ].join("");
     const response = await fetch(url);
     // TODO: this needs to be a type
-    const result: { usd: number } = await response.json();
+    const result: { usd: number; mcap: number } = await response.json();
     return result;
   } catch (error) {
     console.error(error);
   }
 }
 
-const selectAmount = (state: HoldingsStore, holding: HoldingState) =>
-  state.holdings.find((h) => h.id === holding.id)?.amount;
+const selectHolding = (state: HoldingsStore, holding: HoldingState) =>
+  state.holdings.find((h) => h.id === holding.id);
 
 export function FormItem({ holding }: FormItemProps) {
   const amount = useHoldingsStore(
-    useShallow((state) => selectAmount(state, holding))
+    useShallow((state) => selectHolding(state, holding)?.amount)
+  );
+  const price = useHoldingsStore(
+    useShallow((state) => selectHolding(state, holding)?.price)
+  );
+  const mcap = useHoldingsStore(
+    useShallow((state) => selectHolding(state, holding)?.mcap)
   );
   const updateAmount = useHoldingsStore(
     useShallow((state) => state.actions.updateAmount)
   );
-  const updateCoin = useHoldingsStore(
-    useShallow((state) => state.actions.update)
-  );
-  const removeCoin = useHoldingsStore(
-    useShallow((state) => state.actions.remove)
-  );
-  const setPrice = useHoldingsStore(
-    useShallow((state) => state.actions.setPrice)
-  );
+  const updateCoin = useHoldingsStore((state) => state.actions.update);
+  const removeCoin = useHoldingsStore((state) => state.actions.remove);
+  const setPrice = useHoldingsStore((state) => state.actions.setPrice);
 
   return (
     <div className="relative flex gap-6 mb-4">
@@ -80,14 +80,13 @@ export function FormItem({ holding }: FormItemProps) {
         value={holding.formSelection}
         onChange={async (v) => {
           updateCoin(holding.id, v);
-          const price = await fetchCoinPrice(v);
-          if (price) {
-            setPrice(holding.id, price.usd);
+          const res = await fetchCoinPrice(v);
+          if (res) {
+            setPrice(holding.id, res.usd, res.mcap);
           }
         }}
         placeholder="HarryPotterObamaSonic10Inu"
       />
-
       <button
         aria-label="Delete item"
         type="button"

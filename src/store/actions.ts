@@ -59,11 +59,13 @@ export function handleUpdateHolding(
 export function handleSetHoldingsPrice(
   state: HoldingsStore,
   id: string,
-  price: number
+  price: number,
+  mcap: number
 ) {
   const i = state.holdings.findIndex((h) => h.id === id);
   if (i === -1) return { ...state };
   const updatedHoldings = [...state.holdings];
   updatedHoldings[i].price = price;
+  updatedHoldings[i].mcap = mcap;
   return { ...state, holdings: updatedHoldings };
 }

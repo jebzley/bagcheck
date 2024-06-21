@@ -12,7 +12,7 @@ export type HoldingsActions = {
   remove: (id: string) => void;
   setAll: (coins: HoldingState[]) => void;
   updateAmount: (id: string, value: string | null) => void;
-  setPrice: (id: string, usd: number) => void;
+  setPrice: (id: string, usd: number, mcap: number) => void;
 };
 
 export type HoldingsStore = {

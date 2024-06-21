@@ -25,8 +25,8 @@ export const createHoldingsStore = (init: HoldingState[] = INITIAL_STATE) => {
       remove: (id: string) => set((state) => handleRemoveHolding(state, id)),
       setAll: (coins: HoldingState[]) =>
         set((state) => handleSetAllHoldings(state, coins)),
-      setPrice: (id: string, usd: number) =>
-        set((state) => handleSetHoldingsPrice(state, id, usd)),
+      setPrice: (id: string, usd: number, mcap: number) =>
+        set((state) => handleSetHoldingsPrice(state, id, usd, mcap)),
     },
   }));
 };
