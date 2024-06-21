@@ -23,7 +23,7 @@ export function handleUpdateAmount(
   value: string | null,
   id: string
 ) {
-  const checkedValue = Number(value) ? value : null;
+  const checkedValue = Number(value) ? Number(value) : null;
   const i = state.holdings.findIndex((h) => h.id === id);
   if (i === -1) return { ...state };
   const updatedHoldings = [...state.holdings];

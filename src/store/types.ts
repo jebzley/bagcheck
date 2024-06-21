@@ -3,7 +3,7 @@ export type Holding = {
   formSelection: { value: string; label: string } | null;
   cgId: string | null;
   name: string | null;
-  amount: string | null;
+  amount: number | null;
   price: number | null;
   mcap: number | null;
 };

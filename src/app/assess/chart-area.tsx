@@ -1,13 +1,15 @@
 "use client";
 import { useHoldingsStore } from "@/providers/store-provider";
+import { calcHoldings } from "./calculations";
 
 export function ChartArea() {
   const holdings = useHoldingsStore((state) => state.holdings);
+
+  const { total } = calcHoldings(holdings);
   return (
-    <ul>
-      {holdings.map((holding) => {
-        return <li key={holding.id}>{holding.formSelection?.label}</li>;
-      })}
-    </ul>
+    <>
+      <p>{`Total: ${total}`}</p>
+      <p>thank you for using my app</p>
+    </>
   );
 }
