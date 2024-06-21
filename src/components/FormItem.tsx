@@ -1,13 +1,13 @@
 import { SearchCoinResponse } from "@/app/api/search/route";
 import { DEFAULT_COMBOBOX_OPTIONS } from "@/constants/coins";
 import { URL } from "@/constants/url";
-import { CoinState } from "@/store/types";
-import { useCoinStore } from "@/providers/store-provider";
+import { HoldingState, HoldingsStore } from "@/store/types";
+import { useHoldingsStore } from "@/providers/store-provider";
 import AsyncSelect from "react-select/async";
 import { useShallow } from "zustand/react/shallow";
 
 interface FormItemProps {
-  id: string;
+  holding: HoldingState;
 }
 
 async function handleSearch(term?: string) {
@@ -24,7 +24,7 @@ async function handleSearch(term?: string) {
   }
 }
 
-async function fetchCoinPrice(e: CoinState["formSelection"]) {
+async function fetchCoinPrice(e: HoldingState["formSelection"]) {
   try {
     const url = [
       URL.API.BASE_ROUTE,
@@ -41,18 +41,25 @@ async function fetchCoinPrice(e: CoinState["formSelection"]) {
   }
 }
 
-export function FormItem({ id }: FormItemProps) {
-  const coin = useCoinStore(
-    useShallow((state) => state.coins.find((c) => c.id === id)?.formSelection)
-  );
+const selectAmount = (state: HoldingsStore, holding: HoldingState) =>
+  state.holdings.find((h) => h.id === holding.id)?.amount;
 
-  const amount = useCoinStore(
-    useShallow((state) => state.coins.find((c) => c.id === id)?.amount)
+export function FormItem({ holding }: FormItemProps) {
+  const amount = useHoldingsStore(
+    useShallow((state) => selectAmount(state, holding))
   );
-  const updateAmount = useCoinStore(useShallow((state) => state.updateAmount));
-  const updateCoin = useCoinStore(useShallow((state) => state.updateCoin));
-  const removeCoin = useCoinStore(useShallow((state) => state.removeCoin));
-  const setPrice = useCoinStore(useShallow((state) => state.setPrice));
+  const updateAmount = useHoldingsStore(
+    useShallow((state) => state.actions.updateAmount)
+  );
+  const updateCoin = useHoldingsStore(
+    useShallow((state) => state.actions.update)
+  );
+  const removeCoin = useHoldingsStore(
+    useShallow((state) => state.actions.remove)
+  );
+  const setPrice = useHoldingsStore(
+    useShallow((state) => state.actions.setPrice)
+  );
 
   return (
     <div className="relative flex gap-6 mb-4">
@@ -61,8 +68,8 @@ export function FormItem({ id }: FormItemProps) {
         type="number"
         className="w-20 border rounded p-1 text-right"
         placeholder={"0"}
-        value={amount ? amount : "0"}
-        onChange={(e) => updateAmount(id, e.target.value)}
+        onChange={(e) => updateAmount(holding.id, e.target.value)}
+        value={amount ?? ""}
         required
       />
       <AsyncSelect
@@ -70,12 +77,12 @@ export function FormItem({ id }: FormItemProps) {
         required
         defaultOptions={DEFAULT_COMBOBOX_OPTIONS}
         loadOptions={(term) => handleSearch(term)}
-        value={coin}
+        value={holding.formSelection}
         onChange={async (v) => {
-          updateCoin(id, v);
+          updateCoin(holding.id, v);
           const price = await fetchCoinPrice(v);
           if (price) {
-            setPrice(id, price.usd);
+            setPrice(holding.id, price.usd);
           }
         }}
         placeholder="HarryPotterObamaSonic10Inu"
@@ -85,7 +92,7 @@ export function FormItem({ id }: FormItemProps) {
         aria-label="Delete item"
         type="button"
         className="absolute -right-6 h-full flex items-center"
-        onClick={() => removeCoin(id)}
+        onClick={() => removeCoin(holding.id)}
       >
         ✕
       </button>

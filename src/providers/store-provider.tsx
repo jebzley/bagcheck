@@ -5,20 +5,20 @@
 import { type ReactNode, createContext, useRef, useContext } from "react";
 import { type StoreApi, useStore } from "zustand";
 
-import { createCoinStore, INITIAL_STATE } from "@/store/store";
+import { createHoldingsStore, INITIAL_STATE } from "@/store/store";
 
-import type { Store } from "@/store/types";
+import type { HoldingsStore } from "@/store/types";
 
-export const StoreContext = createContext<StoreApi<Store> | null>(null);
+export const StoreContext = createContext<StoreApi<HoldingsStore> | null>(null);
 
 export interface StoreProviderProps {
   children: ReactNode;
 }
 
 export const StoreProvider = ({ children }: StoreProviderProps) => {
-  const storeRef = useRef<StoreApi<Store>>();
+  const storeRef = useRef<StoreApi<HoldingsStore>>();
   if (!storeRef.current) {
-    storeRef.current = createCoinStore(INITIAL_STATE);
+    storeRef.current = createHoldingsStore(INITIAL_STATE);
   }
 
   return (
@@ -28,11 +28,13 @@ export const StoreProvider = ({ children }: StoreProviderProps) => {
   );
 };
 
-export const useCoinStore = <T,>(selector: (store: Store) => T): T => {
+export const useHoldingsStore = <T,>(
+  selector: (store: HoldingsStore) => T
+): T => {
   const storeContext = useContext(StoreContext);
 
   if (!storeContext) {
-    throw new Error(`useCoinStore must be use within StoreProvider`);
+    throw new Error(`useHoldingsStore must be use within StoreProvider`);
   }
 
   return useStore(storeContext, selector);

@@ -1,10 +1,10 @@
-import { CoinState, State } from "@/store/types";
+import { HoldingState, HoldingsStore } from "@/store/types";
 import { v4 as uuid } from "uuid";
 
-export function handleAddCoin(state: State) {
+export function handleAddHolding(state: HoldingsStore) {
   const updatedState = { ...state };
-  updatedState.coins = [
-    ...updatedState.coins,
+  updatedState.holdings = [
+    ...updatedState.holdings,
     {
       id: uuid(),
       formSelection: null,
@@ -15,54 +15,55 @@ export function handleAddCoin(state: State) {
 }
 
 export function handleUpdateAmount(
-  state: State,
+  state: HoldingsStore,
   value: string | null,
   id: string
 ) {
   const checkedValue = !!Number(value) ? value : null;
-  const coinIndex = state.coins.findIndex((coin) => coin.id === id);
-  if (coinIndex === -1) return { ...state };
-  const updatedCoins = [...state.coins];
-  updatedCoins[coinIndex].amount = checkedValue;
-  return { ...state, coins: updatedCoins };
+  const i = state.holdings.findIndex((h) => h.id === id);
+  if (i === -1) return { ...state };
+  const updatedHoldings = [...state.holdings];
+  updatedHoldings[i].amount = checkedValue;
+  return { ...state, holdings: updatedHoldings };
 }
 
-export function handleRemoveCoin(state: State, id: string) {
+export function handleRemoveHolding(state: HoldingsStore, id: string) {
   const updatedState = { ...state };
-  updatedState.coins = updatedState.coins.filter((coin) => coin.id !== id);
+  updatedState.holdings = updatedState.holdings.filter((h) => h.id !== id);
   return updatedState;
 }
 
-export function handleSetAllCoins(state: State, updatedCoins: CoinState[]) {
-  const updatedState = { ...state };
-  updatedState.coins = updatedCoins;
-  return updatedState;
+export function handleSetAllHoldings(
+  state: HoldingsStore,
+  updatedHoldings: HoldingState[]
+) {
+  return { ...state, holdings: updatedHoldings };
 }
 
-export function handleChangeCoin(
-  state: State,
-  selection: CoinState["formSelection"],
+export function handleUpdateHolding(
+  state: HoldingsStore,
+  selection: HoldingState["formSelection"],
   id: string
 ) {
-  const coinIndex = state.coins.findIndex((coin) => coin.id === id);
-  if (coinIndex === -1) return { ...state };
-  const updatedCoins = [...state.coins];
-  updatedCoins[coinIndex] = {
-    ...updatedCoins[coinIndex],
+  const i = state.holdings.findIndex((h) => h.id === id);
+  if (i === -1) return { ...state };
+  const updatedHoldings = [...state.holdings];
+  updatedHoldings[i] = {
+    ...updatedHoldings[i],
     formSelection: selection,
   };
 
-  return { ...state, coins: updatedCoins };
+  return { ...state, holdings: updatedHoldings };
 }
 
-export function handleSetIsLoading(state: State, isLoading: boolean) {
-  return { ...state, isLoading };
-}
-
-export function handleSetCoinPrice(state: State, id: string, price: number) {
-  const coinIndex = state.coins.findIndex((coin) => coin.id === id);
-  if (coinIndex === -1) return { ...state };
-  const updatedCoins = [...state.coins];
-  updatedCoins[coinIndex].price = price;
-  return { ...state, coins: updatedCoins };
+export function handleSetHoldingsPrice(
+  state: HoldingsStore,
+  id: string,
+  price: number
+) {
+  const i = state.holdings.findIndex((h) => h.id === id);
+  if (i === -1) return { ...state };
+  const updatedHoldings = [...state.holdings];
+  updatedHoldings[i].price = price;
+  return { ...state, holdings: updatedHoldings };
 }
