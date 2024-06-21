@@ -1,4 +1,4 @@
-import { AllocationForm } from "@/app/allocations/AllocationForm";
+import { AllocationForm } from "@/app/allocations/allocation-form";
 
 export default function Allocations() {
   return (
