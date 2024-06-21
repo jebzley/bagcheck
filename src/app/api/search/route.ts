@@ -1,5 +1,5 @@
 import { URL } from "@/constants/url";
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 // TODO: Make an interface that works around the app
 export interface CoinResponse {

@@ -20,7 +20,7 @@ export default function AllocationForm() {
           Add another investment
         </button>
         <button type="submit" className="bg-slate-300 rounded p-1 w-full">
-          I'm done!
+          {"I'm done!"}
         </button>
         <p className="text-3xl">Porty value: ${0}</p>
       </div>

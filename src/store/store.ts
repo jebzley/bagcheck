@@ -7,7 +7,7 @@ import {
   handleUpdateAmount,
   handleUpdateHolding,
 } from "./actions";
-import { HoldingState, HoldingsStore } from "./types";
+import type { HoldingState, HoldingsStore } from "./types";
 
 export const INITIAL_STATE: HoldingState[] = [
   { id: "init", formSelection: null, amount: null },

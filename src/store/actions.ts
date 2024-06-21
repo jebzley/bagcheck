@@ -1,4 +1,4 @@
-import { HoldingState, HoldingsStore } from "@/store/types";
+import type { HoldingState, HoldingsStore } from "@/store/types";
 import { v4 as uuid } from "uuid";
 
 export function handleAddHolding(state: HoldingsStore) {
@@ -19,7 +19,7 @@ export function handleUpdateAmount(
   value: string | null,
   id: string
 ) {
-  const checkedValue = !!Number(value) ? value : null;
+  const checkedValue = Number(value) ? value : null;
   const i = state.holdings.findIndex((h) => h.id === id);
   if (i === -1) return { ...state };
   const updatedHoldings = [...state.holdings];

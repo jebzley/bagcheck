@@ -1,10 +1,10 @@
-import { SearchCoinResponse } from "@/app/api/search/route";
-import { DEFAULT_COMBOBOX_OPTIONS } from "@/constants/coins";
-import { URL } from "@/constants/url";
-import { HoldingState, HoldingsStore } from "@/store/types";
-import { useHoldingsStore } from "@/providers/store-provider";
 import AsyncSelect from "react-select/async";
 import { useShallow } from "zustand/react/shallow";
+import { DEFAULT_COMBOBOX_OPTIONS } from "@/constants/coins";
+import { URL } from "@/constants/url";
+import { useHoldingsStore } from "@/providers/store-provider";
+import type { SearchCoinResponse } from "@/app/api/search/route";
+import type { HoldingState, HoldingsStore } from "@/store/types";
 
 interface FormItemProps {
   holding: HoldingState;
@@ -47,12 +47,6 @@ const selectHolding = (state: HoldingsStore, holding: HoldingState) =>
 export function FormItem({ holding }: FormItemProps) {
   const amount = useHoldingsStore(
     useShallow((state) => selectHolding(state, holding)?.amount)
-  );
-  const price = useHoldingsStore(
-    useShallow((state) => selectHolding(state, holding)?.price)
-  );
-  const mcap = useHoldingsStore(
-    useShallow((state) => selectHolding(state, holding)?.mcap)
   );
   const updateAmount = useHoldingsStore(
     useShallow((state) => state.actions.updateAmount)
