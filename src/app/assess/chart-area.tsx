@@ -9,14 +9,12 @@ export function ChartArea() {
   const { total, low, medium, high, gambling } = sortHoldings(holdings);
 
   const pyramidItems = [
-    { title: "Low risk", value: low.total },
-    { title: "Medium Risk", value: medium.total },
-    { title: "High risk", value: high.total },
     { title: "Dogshit", value: gambling.total },
-  ].reverse();
-  console.log(holdings);
-  console.log(low);
-  console.log(medium);
+    { title: "High risk", value: high.total },
+    { title: "Medium Risk", value: medium.total },
+    { title: "Low risk", value: low.total },
+  ];
+
   return (
     <>
       <p>{`Total: ${total}`}</p>
