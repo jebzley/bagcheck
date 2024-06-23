@@ -15,12 +15,12 @@ export function formatExposureMessages(holdingsInfo: HoldingsInfo) {
   const messages = [];
 
   if (riskAreas.every((area) => area.exposure === Exposure.InRange))
-    return ["You've been managing your risk!"];
+    return [<p key="lgtm">LGTM!</p>];
 
   for (const item of riskAreas) {
     if (!item.investments.length) {
       messages.push(
-        <p>
+        <p className="animate-[appear_250ms]">
           You have <b>no exposure</b> to {item.title.toLowerCase()} investments.
           <br />
           Consider getting exposure to investments in this risk profile.
@@ -49,14 +49,18 @@ export function formatExposureMessages(holdingsInfo: HoldingsInfo) {
       suggestion = `Consider closing a trade.`;
     }
     messages.push(
-      <p key={suggestion}>
+      <p key={suggestion} className="animate-[appear_250ms]">
         {"You are "}
         <b>{"overexposed"}</b>
         {` to ${item.title.toLowerCase()} investments. ${suggestion}`}
         <br />
         It is suggested that {item.title.toLowerCase()} investments should take
-        up {SUGGESTED_RANGES[item.type].lower}% to{" "}
-        {SUGGESTED_RANGES[item.type].upper}% of your portfolio.
+        up{" "}
+        <b>
+          {SUGGESTED_RANGES[item.type].lower}% to{" "}
+          {SUGGESTED_RANGES[item.type].upper}%
+        </b>{" "}
+        of your portfolio.
       </p>
     );
   }

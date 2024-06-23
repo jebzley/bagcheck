@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useHoldingsStore } from "@/providers/store-provider";
 import { Pyramid } from "@/components/pyramid";
 import type { RiskLevel } from "@/types/risk";
+import { Delayed } from "@/components/effects/delayed";
 
 import { createHoldingsInfo } from "./sorting";
 import { formatExposureMessages } from "./formatting";
@@ -26,12 +27,18 @@ export function ChartArea() {
 
   return (
     <div className="grid grid-cols-2 w-full h-full">
-      <section className="p-16">
+      <section className="p-16 animate-[appear_250ms]">
         <Pyramid data={pyramidItems} onHover={(type) => setHoveredItem(type)} />
       </section>
-      <section className="flex flex-col gap-8">
-        <p>{`Total: $${total.toFixed(2)}`}</p>
-        {messages?.map((message) => message)}
+      <section className="flex flex-col justify-between">
+        <div className="flex flex-col gap-8">
+          <p>{`Total: $${total.toFixed(2)}`}</p>
+          {messages?.map((message, i) => (
+            <Delayed key={message.toString()} delayMs={i * 450}>
+              {message}
+            </Delayed>
+          ))}
+        </div>
 
         <InfoPanel area={hoveredItem ? holdingsInfo[hoveredItem] : null} />
       </section>
