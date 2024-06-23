@@ -21,12 +21,12 @@ function calcPercentage(total: number, value: number) {
   return (value / total) * 100;
 }
 
-export function calcHoldings(holdings: Holding[]) {
+export function sortHoldings(holdings: Holding[]) {
   const total = calcTotal(holdings);
-  const low = [];
-  const medium = [];
-  const high = [];
-  const gambling = [];
+  const low = [],
+    medium = [],
+    high = [],
+    gambling = [];
 
   for (const holding of holdings) {
     const value = calcHoldingValue(holding);
@@ -44,7 +44,7 @@ export function calcHoldings(holdings: Holding[]) {
   }
 
   const lowTotal = calcTotal(low);
-  const medTotal = calcTotal(high);
+  const medTotal = calcTotal(medium);
   const highTotal = calcTotal(high);
   const gambTotal = calcTotal(gambling);
 
