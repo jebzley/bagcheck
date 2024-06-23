@@ -14,21 +14,6 @@ body {
 
 }
 
-.form-item-enter {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  .form-item-enter-active {
-    opacity: 1;
-    transform: scale(1);
-    transition: opacity 200ms, transform 200ms;
-  }
-  .form-item-exit {
-    opacity: 1;
-    transform: scale(1);
-  }
-  .form-item-exit-active {
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 200ms, transform 200ms;
-  }
+h1 {
+  @apply text-4xl font-semibold 
+}

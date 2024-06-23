@@ -29,10 +29,11 @@ export function ChartArea() {
       <section className="p-16">
         <Pyramid data={pyramidItems} onHover={(type) => setHoveredItem(type)} />
       </section>
-      <section>
+      <section className="flex flex-col gap-8">
         <p>{`Total: $${total.toFixed(2)}`}</p>
-        {hoveredItem && <InfoPanel area={holdingsInfo[hoveredItem]} />}
         {messages?.map((message) => message)}
+
+        <InfoPanel area={hoveredItem ? holdingsInfo[hoveredItem] : null} />
       </section>
     </div>
   );

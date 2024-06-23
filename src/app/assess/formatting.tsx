@@ -43,7 +43,7 @@ export function formatExposureMessages(holdingsInfo: HoldingsInfo) {
     let suggestion = "";
     if (under.length) {
       suggestion = `Consider closing a trade and adding to your ${humanListJoin(
-        under.map((c) => c.title)
+        under.map((c) => c.title.toLowerCase())
       )} investments.`;
     } else {
       suggestion = `Consider closing a trade.`;
