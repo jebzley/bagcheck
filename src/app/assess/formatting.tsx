@@ -1,5 +1,6 @@
 import { humanListJoin } from "@/helpers/string";
 import { Exposure, HoldingsInfo, RiskArea } from "./types";
+import { SUGGESTED_RANGES } from "@/constants/classification";
 
 export function formatExposureMessages(holdingsInfo: HoldingsInfo) {
   const riskAreas = [
@@ -17,6 +18,15 @@ export function formatExposureMessages(holdingsInfo: HoldingsInfo) {
     return ["You've been managing your risk!"];
 
   for (const item of riskAreas) {
+    if (!item.investments.length) {
+      messages.push(
+        <p>
+          You have <b>no exposure</b> to {item.title.toLowerCase()} investments.
+          <br />
+          Consider getting exposure to investments in this risk profile.
+        </p>
+      );
+    }
     switch (item.exposure) {
       case Exposure.Over:
         over.push(item);
@@ -42,7 +52,11 @@ export function formatExposureMessages(holdingsInfo: HoldingsInfo) {
       <p key={suggestion}>
         {"You are "}
         <b>{"overexposed"}</b>
-        {` to ${item.title} investments. ${suggestion}`}
+        {` to ${item.title.toLowerCase()} investments. ${suggestion}`}
+        <br />
+        It is suggested that {item.title.toLowerCase()} investments should take
+        up {SUGGESTED_RANGES[item.type].lower}% to{" "}
+        {SUGGESTED_RANGES[item.type].upper}% of your portfolio.
       </p>
     );
   }

@@ -2,9 +2,9 @@ import type { Holding } from "@/store/types";
 import type { RiskLevel } from "@/types/risk";
 
 export enum Exposure {
-  Under,
-  Over,
-  InRange,
+  Under = "underexposed",
+  Over = "overexposed",
+  InRange = "in range",
 }
 
 export type HoldingInfo = {

@@ -4,6 +4,9 @@ export function InfoPanel({ area }: { area: RiskArea }) {
   return (
     <div>
       <h2>{area.title}</h2>
+      <p>
+        <b>{area.exposure.toUpperCase()}</b>
+      </p>
       <p>This area takes up {area.percentage.toFixed(0)}% of your portfolio </p>
       <dl>
         {area.investments.map((investment) => {
