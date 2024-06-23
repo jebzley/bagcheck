@@ -51,21 +51,29 @@ export function sortHoldings(holdings: Holding[]) {
   return {
     total,
     low: {
+      type: "low",
+      title: "Low Risk",
       investments: low,
       total: lowTotal,
       percentage: calcPercentage(total, lowTotal),
     },
     medium: {
+      type: "medium",
+      title: "Medium Risk",
       investments: medium,
       total: medTotal,
       percentage: calcPercentage(total, medTotal),
     },
     high: {
+      type: "high",
+      title: "High Risk",
       investments: high,
       total: highTotal,
       percentage: calcPercentage(total, highTotal),
     },
     gambling: {
+      type: "gambling",
+      title: "Gambling",
       investments: gambling,
       total: gambTotal,
       percentage: calcPercentage(total, gambTotal),
