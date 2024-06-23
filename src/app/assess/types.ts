@@ -20,3 +20,12 @@ export type RiskArea = {
   investments: HoldingInfo[];
   exposure: Exposure;
 };
+
+export type HoldingsInfo = {
+  total: number;
+
+  high: RiskArea;
+  medium: RiskArea;
+  low: RiskArea;
+  gambling: RiskArea;
+};

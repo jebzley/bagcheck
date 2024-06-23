@@ -9,6 +9,7 @@ import type { RiskLevel } from "@/types/risk";
 import { Exposure, HoldingInfo } from "./types";
 
 const { LARGE, MEDIUM, SMALL } = MARKET_CAP_BOUNDARIES;
+
 function calcHoldingValue(holding: Holding) {
   if (holding.amount && holding.price) {
     return holding.amount * holding.price;
