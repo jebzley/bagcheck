@@ -24,11 +24,13 @@ export function Pyramid({ data, onHover }: Props) {
           <div
             className={`${
               bgColors[entry.type]
-            } transition-all hover:ml-4 group-hover:opacity-70 hover:!opacity-100`}
+            } transition-all hover:ml-4 active:ml-4 group-active:opacity-70 group-hover:opacity-70 hover:!opacity-100 active:!opacity-100`}
             key={entry.title}
             title={entry.title}
             style={{ ...styles[index] }}
             onMouseOver={() => onHover(entry.type)}
+            onTouchStart={() => onHover(entry.type)}
+            onTouchEnd={() => onHover(null)}
             onMouseLeave={() => onHover(null)}
           />
         );

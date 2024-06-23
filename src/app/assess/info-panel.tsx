@@ -1,16 +1,4 @@
-import type { Holding } from "@/store/types";
-
-type HoldingInfo = {
-  value: number;
-  percentage: number;
-} & Holding;
-
-type RiskArea = {
-  title: string;
-  percentage: number;
-  total: number;
-  investments: HoldingInfo[];
-};
+import { RiskArea } from "./types";
 
 export function InfoPanel({ area }: { area: RiskArea }) {
   return (
@@ -20,10 +8,13 @@ export function InfoPanel({ area }: { area: RiskArea }) {
       <dl>
         {area.investments.map((investment) => {
           return (
-            <>
-              <dt key={`dt${investment.id}`}>{investment.name}</dt>
-              <dd key={`dd${investment.id}`}>${investment.value.toFixed(2)}</dd>
-            </>
+            <div key={investment.id}>
+              <dt>{investment.name}</dt>
+              <dd>
+                ${investment.value.toFixed(2)} -{" "}
+                {investment.percentage.toFixed(0)}%
+              </dd>
+            </div>
           );
         })}
       </dl>
