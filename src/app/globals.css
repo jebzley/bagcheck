@@ -18,6 +18,10 @@ h1 {
   @apply text-4xl font-semibold 
 }
 
+h2 {
+  @apply text-xl font-semibold
+}
+
 input {
   @apply border text-right border-gray-300 rounded p-1 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500
 }

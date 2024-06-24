@@ -15,7 +15,7 @@ export interface CoinResponse {
 export interface SearchCoinResponse {
   coins: CoinResponse[];
 }
-// TODO: API error handling
+
 export async function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams;
   const term = params.get("term");
@@ -28,8 +28,12 @@ export async function GET(request: NextRequest) {
     process.env.COINGECKO_API_KEY,
   ].join("");
 
-  const response = await fetch(route);
-  const result = await response.json();
-  const coins: SearchCoinResponse = result.coins;
-  return Response.json({ coins });
+  try {
+    const response = await fetch(route);
+    const result = await response.json();
+    const coins: SearchCoinResponse = result.coins;
+    return Response.json({ coins });
+  } catch (error) {
+    throw new Error(`could not fetch info for ${term}`);
+  }
 }

@@ -8,7 +8,6 @@ import { Delayed } from "@/components/effects/delayed";
 
 import { createHoldingsInfo } from "./sorting";
 import { formatExposureMessages } from "./formatting";
-import { InfoPanel } from "./info-panel";
 import { HoldingsInfo } from "./types";
 
 export function ChartArea() {
@@ -26,22 +25,23 @@ export function ChartArea() {
   ];
 
   return (
-    <div className="grid grid-cols-2 w-full h-full">
-      <section className="p-16 animate-[appear_250ms]">
-        <Pyramid data={pyramidItems} onHover={(type) => setHoveredItem(type)} />
-      </section>
-      <section className="flex flex-col justify-between">
-        <div className="flex flex-col gap-8">
-          <p>{`Total: $${total.toFixed(2)}`}</p>
-          {messages?.map((message, i) => (
-            <Delayed key={message.toString()} delayMs={i * 450}>
-              {message}
-            </Delayed>
-          ))}
-        </div>
-
-        <InfoPanel area={hoveredItem ? holdingsInfo[hoveredItem] : null} />
-      </section>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+      <div className="w-full p-16 lg:p-32 flex flex-col flex-grow">
+        <Pyramid
+          data={pyramidItems}
+          onHover={(level) => setHoveredItem(level ? level : null)}
+        />
+      </div>
+      <div className="w-full flex flex-col gap-8">
+        <p>
+          Portfolio value: <b>${total.toFixed(2)}</b>
+        </p>
+        {messages?.map((message, i) => (
+          <Delayed key={message.toString()} delayMs={i * 450}>
+            {message}
+          </Delayed>
+        ))}
+      </div>
     </div>
   );
 }

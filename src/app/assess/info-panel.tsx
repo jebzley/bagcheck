@@ -6,7 +6,7 @@ type Props = {
 
 export function InfoPanel({ area }: Props) {
   return (
-    <div className="min-h-56 w-full overflow-scroll bg-slate-200 p-4 rounded">
+    <article className="h-56 w-full overflow-scroll border p-4 rounded">
       {area ? (
         <>
           <h2>{area.title}</h2>
@@ -33,6 +33,6 @@ export function InfoPanel({ area }: Props) {
       ) : (
         <p>Hover over a section of the pyramid chart to learn more</p>
       )}
-    </div>
+    </article>
   );
 }

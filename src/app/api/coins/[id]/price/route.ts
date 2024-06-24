@@ -15,9 +15,13 @@ export async function GET(
     process.env.COINGECKO_API_KEY,
   ].join("");
 
-  const response = await fetch(route);
-  const result = await response.json();
-  const usd = result[params.id].usd;
-  const mcap = result[params.id].usd_market_cap;
-  return Response.json({ id: params.id, usd, mcap });
+  try {
+    const response = await fetch(route);
+    const result = await response.json();
+    const usd = result[params.id].usd;
+    const mcap = result[params.id].usd_market_cap;
+    return Response.json({ id: params.id, usd, mcap });
+  } catch (error) {
+    throw new Error(`could not fetch price for ${params.id}`);
+  }
 }

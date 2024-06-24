@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { StoreProvider } from "@/providers/store-provider";
-import PageLayout from "@/components/page-layout";
 import Navigation from "@/components/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,11 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`m-0 p-0 lg:h-screen ${inter.className}`}>
         <StoreProvider>
           <Navigation />
-          <main className="h-screen p-8">
-            <PageLayout>{children}</PageLayout>
+          <main className="max-w-7xl m-auto p-8 py-16 flex flex-col gap-8 items-center">
+            {children}
           </main>
         </StoreProvider>
       </body>

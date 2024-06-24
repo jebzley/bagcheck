@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <>
       <hgroup className="text-center">
-        <h1 className="text-4xl font-bold">The Pyramid™</h1>
+        <h1>The Pyramid™</h1>
         <p>
           You <i>are</i> allocating your risk, right anon?
         </p>

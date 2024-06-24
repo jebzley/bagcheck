@@ -18,7 +18,7 @@ export function Pyramid({ data, onHover }: Props) {
   const styles = calculatePyramidStyles(data);
 
   return (
-    <div className="group w-full h-full flex flex-col justify-center align-middle box-border">
+    <div className="group max-h-96 w-full aspect-square flex flex-col justify-center align-middle box-border">
       {data.map((entry, index) => {
         return (
           <div

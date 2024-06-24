@@ -7,7 +7,7 @@ export default function Navigation() {
   const holdings = useHoldingsStore((state) => state.holdings);
   const hasHoldings = holdings.length > 0;
   return (
-    <nav className="w-full p-4">
+    <nav className="w-full p-4 fixed bg-white">
       <ul className="flex gap-4 justify-center">
         <li>
           <NavigationLink href={ROUTES.HOME} text="> allocate" />
