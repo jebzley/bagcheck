@@ -18,7 +18,9 @@ export function ButtonLink({
         aria-disabled={disabled}
         tabIndex={disabled ? -1 : 1}
         className={`flex justify-center align-middle rounded border transition-colors border-black w-full p-1 ${
-          disabled && "border-gray-300 text-gray-300 pointer-events-none"
+          disabled
+            ? "border-gray-300 text-gray-300 pointer-events-none"
+            : "hover:bg-gray-100"
         } ${className}`}
       >
         {children}
