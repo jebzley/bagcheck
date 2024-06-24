@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={`m-0 p-0 lg:h-screen ${inter.className}`}>
         <StoreProvider>
           <Navigation />
-          <main className="max-w-7xl m-auto p-8 py-16 flex flex-col gap-8 items-center">
+          <main className="max-w-7xl m-auto p-8 py-32 flex flex-col gap-8 items-center">
             {children}
           </main>
         </StoreProvider>

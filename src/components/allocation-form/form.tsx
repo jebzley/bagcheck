@@ -79,7 +79,7 @@ export function AllocationForm() {
             id="amount"
             style={{ appearance: "textfield" }}
             type="number"
-            className="w-20"
+            className="w-20 h-full"
             placeholder={"0"}
             value={amount ? amount : ""}
             onChange={(e) => {
@@ -118,12 +118,6 @@ export function AllocationForm() {
             placeholder="Investment"
           />
         </div>
-        <Button
-          invisible
-          className="absolute -right-6 bottom-2 hover:font-bold"
-        >
-          ···
-        </Button>
       </div>
       <div className="flex gap-4 w-full flex-grow">
         <Button type="submit" disabled={!isValid}>
