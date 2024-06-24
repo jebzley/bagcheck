@@ -1,20 +1,8 @@
 import type { Holding, HoldingsStore } from "@/store/types";
-import { v4 as uuid } from "uuid";
 
-export function handleAddHolding(state: HoldingsStore) {
+export function handleAddHolding(state: HoldingsStore, holding: Holding) {
   const updatedState = { ...state };
-  updatedState.holdings = [
-    ...updatedState.holdings,
-    {
-      id: uuid(),
-      name: null,
-      cgId: null,
-      formSelection: null,
-      amount: null,
-      price: null,
-      mcap: null,
-    },
-  ];
+  updatedState.holdings = [...updatedState.holdings, holding];
   return updatedState;
 }
 

@@ -9,7 +9,7 @@ export type Holding = {
 };
 
 export type HoldingsActions = {
-  add: () => void;
+  add: (holding: Holding) => void;
   update: (
     id: string,
     selection: Holding["formSelection"],

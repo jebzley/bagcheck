@@ -9,23 +9,12 @@ import {
 } from "./actions";
 import type { Holding, HoldingsStore } from "./types";
 
-export const INITIAL_STATE: Holding[] = [
-  {
-    id: "init",
-    formSelection: null,
-    amount: null,
-    price: null,
-    mcap: null,
-    cgId: null,
-    name: null,
-  },
-];
-
-export const createHoldingsStore = (init: Holding[] = INITIAL_STATE) => {
+export const createHoldingsStore = () => {
   return createStore<HoldingsStore>()((set) => ({
-    holdings: init,
+    holdings: [],
     actions: {
-      add: () => set((state) => handleAddHolding(state)),
+      add: (holding: Holding) =>
+        set((state) => handleAddHolding(state, holding)),
       update: (
         id: string,
         selection: Holding["formSelection"],

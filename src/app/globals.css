@@ -17,3 +17,12 @@ body {
 h1 {
   @apply text-4xl font-semibold 
 }
+
+input {
+  @apply border text-right border-gray-300 rounded p-1 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500
+}
+
+table, th, td {
+  @apply border px-2 py-1
+}
+

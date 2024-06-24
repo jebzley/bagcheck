@@ -1,35 +1,11 @@
-"use client";
-import { useShallow } from "zustand/react/shallow";
-import { FormItem } from "./form-item";
-import { useHoldingsStore } from "@/providers/store-provider";
-import { useRouter } from "next/navigation";
+import { AllocationForm } from "./form";
+import { AllocationTable } from "./allocation-table";
 
-export function AllocationForm() {
-  const router = useRouter();
-  const holdings = useHoldingsStore(useShallow((state) => state.holdings));
-  const addHolding = useHoldingsStore(useShallow((state) => state.actions.add));
+export function Allocations() {
   return (
-    <form
-      className="w-96 h-full"
-      action={() => {
-        router.push("/assess");
-      }}
-    >
-      {holdings.map((holding) => {
-        return <FormItem key={holding.id} holding={holding} />;
-      })}
-      <div className="flex flex-col gap-4 w-full justify-center relative">
-        <button
-          type="button"
-          className="bg-slate-300 rounded p-1 w-full"
-          onClick={addHolding}
-        >
-          Add another investment
-        </button>
-        <button type="submit" className="bg-slate-300 rounded p-1 w-full">
-          {"I'm done!"}
-        </button>
-      </div>
-    </form>
+    <section className="flex flex-col gap-4 w-96 h-full">
+      <AllocationForm />
+      <AllocationTable />
+    </section>
   );
 }

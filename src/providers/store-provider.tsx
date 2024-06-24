@@ -5,7 +5,7 @@
 import { type ReactNode, createContext, useRef, useContext } from "react";
 import { type StoreApi, useStore } from "zustand";
 
-import { createHoldingsStore, INITIAL_STATE } from "@/store/store";
+import { createHoldingsStore } from "@/store/store";
 
 import type { HoldingsStore } from "@/store/types";
 
@@ -18,7 +18,7 @@ export interface StoreProviderProps {
 export const StoreProvider = ({ children }: StoreProviderProps) => {
   const storeRef = useRef<StoreApi<HoldingsStore>>();
   if (!storeRef.current) {
-    storeRef.current = createHoldingsStore(INITIAL_STATE);
+    storeRef.current = createHoldingsStore();
   }
 
   return (
