@@ -9,7 +9,7 @@ export const DEFAULT_COMBOBOX_OPTIONS: { label: string; value: string }[] = [
   },
   {
     label: "BNB",
-    value: "bnb",
+    value: "binancecoin",
   },
   {
     label: "Solana",

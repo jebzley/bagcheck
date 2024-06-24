@@ -16,7 +16,12 @@ export default function Navigation() {
           {hasHoldings ? (
             <NavigationLink href={"ROUTES.ASSESS"} text="> assess" />
           ) : (
-            <p className="text-gray-400 cursor-not-allowed">{"> assess"}</p>
+            <p
+              aria-label="Disabled link: assess"
+              className="text-gray-400 cursor-not-allowed"
+            >
+              {"> assess"}
+            </p>
           )}
         </li>
       </ul>

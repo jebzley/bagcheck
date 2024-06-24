@@ -3,18 +3,27 @@ import { Allocations } from "@/components/allocation-form";
 export default function Home() {
   return (
     <>
-      <hgroup>
-        <h1 className="text-4xl font-bold">The Cobie risk pyramid</h1>
+      <hgroup className="text-center">
+        <h1 className="text-4xl font-bold">The Pyramid™</h1>
         <p>
           You <i>are</i> allocating your risk, right anon?
         </p>
       </hgroup>
       <p className="max-w-4xl text-center">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quas error
-        cumque perferendis quibusdam facere accusantium molestiae temporibus
-        nulla vero aliquid consequatur qui corrupti deleniti vitae ipsa ut
-        veniam, exercitationem explicabo.
+        {"I made this app for a friend who is terrible at managing their risk."}
+        <br />
+        {
+          "Put your crypto investments in the form below and map it on a risk pyramid."
+        }
       </p>
+      <aside>
+        <p className="text-xs">
+          {
+            "Note: This approximates risk from market cap size, which is absolute nonsense. Don't actually use this as a serious tool for managing your finances."
+          }
+        </p>
+      </aside>
+      <p className="max-w-4xl text-center">{}</p>
       <Allocations />
     </>
   );
