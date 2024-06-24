@@ -103,7 +103,7 @@ export function AllocationForm() {
             classNames={{ control: () => "!border-gray-300 rounded" }}
             required
             defaultOptions={DEFAULT_COMBOBOX_OPTIONS}
-            loadOptions={debounce(handleSearch, 200)}
+            loadOptions={debounce(handleSearch, 100)}
             onChange={(v) =>
               setCurrentHolding({
                 id: uuid(),

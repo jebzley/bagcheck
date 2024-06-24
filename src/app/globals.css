@@ -33,9 +33,11 @@ table, th, td {
 dl dd, dl dt {
   @apply inline
 }
+dl dt{
+  @apply font-semibold
+}
 
 dl dt:after {
-  font-weight: semibold;
   content: ": "
 }
 

@@ -1,4 +1,5 @@
-import { RiskArea } from "./types";
+import { Chip } from "@/components/chip";
+import { Exposure, RiskArea } from "./types";
 
 type Props = {
   area: RiskArea | null;
@@ -9,13 +10,14 @@ export function InfoPanel({ area }: Props) {
     ? area.investments.sort((a, b) => b.percentage - a.percentage)
     : [];
   return (
-    <article className="h-56 w-full overflow-scroll border p-4 rounded">
+    <article className="h-56 w-full overflow-scroll border p-4 rounded flex flex-col gap-2">
       {area ? (
         <>
           <h2>{area.title}</h2>
-          <p>
-            <b>{area.exposure.toUpperCase()}</b>
-          </p>
+          <Chip
+            text={area.exposure.toUpperCase()}
+            color={area.exposure === Exposure.InRange ? "green" : "red"}
+          />
           <p>
             This area takes up {area.percentage.toFixed(0)}% of your portfolio{" "}
           </p>
@@ -24,10 +26,7 @@ export function InfoPanel({ area }: Props) {
               return (
                 <div key={investment.id}>
                   <dt>{investment.name}</dt>
-                  <dd>
-                    ${investment.value.toFixed(2)} -{" "}
-                    {investment.percentage.toFixed(0)}%
-                  </dd>
+                  <dd>{investment.percentage.toFixed(0)}%</dd>
                 </div>
               );
             })}
