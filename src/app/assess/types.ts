@@ -23,7 +23,6 @@ export type RiskArea = {
 
 export type HoldingsInfo = {
   total: number;
-
   high: RiskArea;
   medium: RiskArea;
   low: RiskArea;

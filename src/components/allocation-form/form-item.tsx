@@ -1,6 +1,6 @@
 import AsyncSelect from "react-select/async";
 import { useShallow } from "zustand/react/shallow";
-import { DEFAULT_COMBOBOX_OPTIONS } from "@/constants/coins";
+import { DEFAULT_COMBOBOX_OPTIONS } from "@/constants/form";
 import { URL } from "@/constants/url";
 import { useHoldingsStore } from "@/providers/store-provider";
 import type { SearchCoinResponse } from "@/app/api/search/route";
@@ -62,7 +62,7 @@ export function FormItem({ holding }: Props) {
         name={`amt-${holding.id}`}
         style={{ appearance: "textfield" }}
         type="number"
-        className="w-20 border rounded p-1 text-right"
+        className="w-20 border border-gray-300 rounded p-1 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"
         placeholder={"0"}
         onChange={(e) => updateAmount(holding.id, e.target.value)}
         value={amount ?? ""}
@@ -72,6 +72,7 @@ export function FormItem({ holding }: Props) {
         id={`val-${holding.id}`}
         name={`val-${holding.id}`}
         className="w-full"
+        classNames={{ control: () => "!border-gray-300 rounded" }}
         required
         defaultOptions={DEFAULT_COMBOBOX_OPTIONS}
         loadOptions={(term) => handleSearch(term)}
@@ -83,7 +84,7 @@ export function FormItem({ holding }: Props) {
             updateCoin(holding.id, v, res.usd, res.mcap);
           }
         }}
-        placeholder="HarryPotterObamaSonic10Inu"
+        placeholder="Investment"
       />
       <button
         aria-label="Delete item"

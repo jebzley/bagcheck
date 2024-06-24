@@ -1,6 +1,6 @@
 "use client";
 import { useShallow } from "zustand/react/shallow";
-import { FormItem } from "@/components/form-item";
+import { FormItem } from "./form-item";
 import { useHoldingsStore } from "@/providers/store-provider";
 import { useRouter } from "next/navigation";
 
