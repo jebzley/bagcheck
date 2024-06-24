@@ -1,16 +1,16 @@
 "use client";
+import { useState } from "react";
 import AsyncSelect from "react-select/async";
 import { v4 as uuid } from "uuid";
 
 import { DEFAULT_COMBOBOX_OPTIONS } from "@/constants/form";
 import { URL } from "@/constants/url";
-import type { SearchCoinResponse } from "@/app/api/search/route";
-import { Button } from "../button";
-import { useState } from "react";
+import { ROUTES } from "@/constants/routes";
+import { Button } from "@/components/button";
+import { ButtonLink } from "@/components/button-link";
 import { Holding } from "@/store/types";
 import { useHoldingsStore } from "@/providers/store-provider";
-import Link from "next/link";
-import { ROUTES } from "@/constants/routes";
+import type { SearchCoinResponse } from "@/app/api/search/route";
 
 async function handleSearch(term?: string) {
   try {
@@ -121,15 +121,9 @@ export function AllocationForm() {
         <Button type="submit" disabled={!isValid}>
           Add Investment
         </Button>
-
-        <Button
-          disabled={holdings.length === 0}
-          onClick={(e) => e.preventDefault()}
-        >
-          <Link className="w-full" href={ROUTES.ASSESS}>
-            Next
-          </Link>
-        </Button>
+        <ButtonLink href={ROUTES.ASSESS} disabled={holdings.length === 0}>
+          Next
+        </ButtonLink>
       </div>
     </form>
   );

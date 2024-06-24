@@ -14,7 +14,7 @@ export default function Navigation() {
         </li>
         <li>
           {hasHoldings ? (
-            <NavigationLink href={"ROUTES.ASSESS"} text="> assess" />
+            <NavigationLink href={ROUTES.ASSESS} text="> assess" />
           ) : (
             <p
               aria-label="Disabled link: assess"
