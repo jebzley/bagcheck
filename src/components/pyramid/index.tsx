@@ -30,8 +30,6 @@ export function Pyramid({ data, onHover }: Props) {
             style={{ ...styles[index] }}
             onMouseOver={() => onHover(entry.type)}
             onTouchStart={() => onHover(entry.type)}
-            onTouchEnd={() => onHover(null)}
-            onMouseLeave={() => onHover(null)}
           />
         );
       })}

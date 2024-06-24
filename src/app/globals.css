@@ -30,3 +30,12 @@ table, th, td {
   @apply border px-2 py-1
 }
 
+dl dd, dl dt {
+  @apply inline
+}
+
+dl dt:after {
+  font-weight: semibold;
+  content: ": "
+}
+

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import AsyncSelect from "react-select/async";
 import { v4 as uuid } from "uuid";
+import { debounce } from "lodash";
 
 import { DEFAULT_COMBOBOX_OPTIONS } from "@/constants/form";
 import { URL } from "@/constants/url";
@@ -21,7 +22,7 @@ async function handleSearch(term?: string) {
       return { value: coin.id, label: coin.name };
     });
   } catch (error) {
-    console.error(error);
+    throw new Error("Error searching coins");
     return [];
   }
 }
@@ -39,24 +40,28 @@ async function fetchCoinPrice(cgId: string) {
     const result: { usd: number; mcap: number } = await response.json();
     return result;
   } catch (error) {
-    console.error(error);
+    throw new Error("Could not fetch coin price");
   }
 }
 
 export function AllocationForm() {
-  const [holding, setHolding] = useState<Holding | null>(null);
+  const [currentHolding, setCurrentHolding] = useState<Holding | null>(null);
   const [amount, setAmount] = useState("");
   const add = useHoldingsStore((state) => state.actions.add);
   const setPrice = useHoldingsStore((state) => state.actions.setPrice);
   const holdings = useHoldingsStore((state) => state.holdings);
-  const alreadyHeld = holdings.some((h) => h.cgId === holding?.cgId);
+
+  const alreadyHeld = holdings.some((h) => h.cgId === currentHolding?.cgId);
   const isValid =
-    holding && holding.amount && !alreadyHeld && holding.amount > 0;
+    currentHolding &&
+    currentHolding.amount &&
+    !alreadyHeld &&
+    currentHolding.amount > 0;
 
   const onSubmit = async () => {
-    const tmpHolding = { ...holding };
-    isValid && add(holding);
-    setHolding(null);
+    const tmpHolding = { ...currentHolding };
+    isValid && add(currentHolding);
+    setCurrentHolding(null);
     setAmount("");
     const res = await fetchCoinPrice(tmpHolding.cgId ?? "");
     if (res && tmpHolding.id) {
@@ -79,8 +84,11 @@ export function AllocationForm() {
             value={amount ? amount : ""}
             onChange={(e) => {
               setAmount(e.target.value);
-              if (Number(e.target.value) && holding) {
-                setHolding({ ...holding, amount: Number(e.target.value) });
+              if (Number(e.target.value) && currentHolding) {
+                setCurrentHolding({
+                  ...currentHolding,
+                  amount: Number(e.target.value),
+                });
               }
             }}
             required
@@ -91,13 +99,13 @@ export function AllocationForm() {
           <AsyncSelect
             name="combobox-holding"
             id="combobox-holding"
-            value={holding ? holding?.formSelection : null}
+            value={currentHolding ? currentHolding?.formSelection : null}
             classNames={{ control: () => "!border-gray-300 rounded" }}
             required
             defaultOptions={DEFAULT_COMBOBOX_OPTIONS}
-            loadOptions={handleSearch}
+            loadOptions={debounce(handleSearch, 200)}
             onChange={(v) =>
-              setHolding({
+              setCurrentHolding({
                 id: uuid(),
                 formSelection: v,
                 cgId: v!.value,

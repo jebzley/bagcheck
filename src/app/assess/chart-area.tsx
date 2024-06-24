@@ -9,13 +9,14 @@ import { Delayed } from "@/components/effects/delayed";
 import { createHoldingsInfo } from "./sorting";
 import { formatExposureMessages } from "./formatting";
 import { HoldingsInfo } from "./types";
+import { InfoPanel } from "./info-panel";
 
 export function ChartArea() {
   const [hoveredItem, setHoveredItem] = useState<RiskLevel | null>(null);
   const holdings = useHoldingsStore((state) => state.holdings);
 
   const holdingsInfo: HoldingsInfo = createHoldingsInfo(holdings);
-  const { total, gambling, high, medium, low } = holdingsInfo;
+  const { gambling, high, medium, low } = holdingsInfo;
   const messages = formatExposureMessages(holdingsInfo);
   const pyramidItems: { type: RiskLevel; title: string; value: number }[] = [
     { type: "gambling", title: "Gambling", value: gambling.total },
@@ -33,9 +34,7 @@ export function ChartArea() {
         />
       </div>
       <div className="w-full flex flex-col gap-8">
-        <p>
-          Portfolio value: <b>${total.toFixed(2)}</b>
-        </p>
+        <InfoPanel area={hoveredItem ? holdingsInfo[hoveredItem] : null} />
         {messages?.map((message, i) => (
           <Delayed key={message.toString()} delayMs={i * 450}>
             {message}
